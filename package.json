@@ -1,0 +1,19 @@
+{
+  "name": "now-monorepo",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "api",
+    "dashboard"
+  ],
+  "scripts": {
+    "dev": "concurrently -n api,dashboard -c cyan,green \"npm run dev --workspace api\" \"npm run dev --workspace dashboard\"",
+    "dev:api": "npm run dev --workspace api",
+    "dev:dashboard": "npm run dev --workspace dashboard",
+    "build": "npm run build --workspace api && npm run build --workspace dashboard"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
+

@@ -1,0 +1,29 @@
+name: Cleanup Expired Data
+
+on:
+  schedule:
+    - cron: "0 * * * *"
+  workflow_dispatch:
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate required secrets
+        run: |
+          if [ -z "${{ secrets.NOW_CLEANUP_URL }}" ]; then
+            echo "NOW_CLEANUP_URL is missing"
+            exit 1
+          fi
+          if [ -z "${{ secrets.NOW_ADMIN_TOKEN }}" ]; then
+            echo "NOW_ADMIN_TOKEN is missing"
+            exit 1
+          fi
+
+      - name: Trigger cleanup endpoint
+        run: |
+          curl --fail --show-error --silent \
+            -X POST "${{ secrets.NOW_CLEANUP_URL }}?dryRun=false" \
+            -H "x-admin-token: ${{ secrets.NOW_ADMIN_TOKEN }}" \
+            -H "content-type: application/json"
+
