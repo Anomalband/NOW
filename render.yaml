@@ -17,8 +17,9 @@ services:
       - key: CORS_ORIGIN
         sync: false
 
-  - type: static
+  - type: web
     name: now-dashboard
+    runtime: static
     rootDir: dashboard
     buildCommand: npm ci && npm run build
     staticPublishPath: dist
