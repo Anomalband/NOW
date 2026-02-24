@@ -26,6 +26,24 @@ await app.register(questSelectionRoutes, { prefix: "/api/v1" });
 await app.register(cleanupRoutes, { prefix: "/api/v1" });
 await app.register(matchRoutes, { prefix: "/api/v1" });
 
+app.get("/", async () => {
+  return {
+    service: "now-api",
+    message: "Use /api/v1/health for health check.",
+    apiBase: "/api/v1",
+    timestamp: new Date().toISOString(),
+  };
+});
+
+app.get("/api/v1", async () => {
+  return {
+    service: "now-api",
+    message: "API base is active. Try /api/v1/health.",
+    health: "/api/v1/health",
+    timestamp: new Date().toISOString(),
+  };
+});
+
 app.setErrorHandler((error, _request, reply) => {
   app.log.error(error);
   reply.code(500).send({
